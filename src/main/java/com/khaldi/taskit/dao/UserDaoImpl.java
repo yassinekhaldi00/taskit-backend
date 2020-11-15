@@ -17,6 +17,23 @@ public class UserDaoImpl implements UserDao {
 	
 	@Autowired
 	private EntityManager entityManager;
+	
+	@Override
+	public User findByEmail(String email) {
+		User user = new User();
+		Session session = entityManager.unwrap(Session.class);
+		@SuppressWarnings("unchecked")
+		Query<User> query = session.createQuery("from User where email =:email").
+				setParameter("email",email);
+		try {
+			user = query.getSingleResult();
+			user.setValid(true);
+		}catch (NoResultException e) {
+			user.setValid(false);
+		}
+		
+		return user;
+	}
 
 	@Override
 	public List<User> getUsers() {
