@@ -8,9 +8,7 @@ public interface UserDao {
 	
 	List<User> getUsers();
 	
-	User findByEmail(String email);
-	
-	User getUser(String email, String password);
+	User getUser(String email);
 	
 	User addUser(User user);
 	

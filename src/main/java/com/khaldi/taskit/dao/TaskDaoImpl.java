@@ -23,7 +23,7 @@ public class TaskDaoImpl implements TaskDao {
 	public List<Task> getTasks(long userId) {
 		Session session = entityManager.unwrap(Session.class);
 		@SuppressWarnings("unchecked")
-		Query<Task> query = session.createQuery("from Task t join t.user u where u.id=:id ").setParameter("id",userId);
+		Query<Task> query = session.createQuery("from Task t where t.user.id=:id ").setParameter("id",userId);
 		List<Task> tasks = query.list();
 		return tasks;
 	}

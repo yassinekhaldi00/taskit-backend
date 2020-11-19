@@ -20,13 +20,13 @@ public class UserService  implements UserDetailsService{
 	 private UserDao userDao;
 	 
 	 @Transactional
-		public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-			User user = userDao.findByEmail(email);
-			if(!user.isValid()) {
-				 throw new UsernameNotFoundException("Not found!");
-			}
-			return new UserPrincipal(user);
+	 public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userDao.getUser(email);
+		if(!user.isValid()) {
+			 throw new UsernameNotFoundException("Not found!");
 		}
+		return new UserPrincipal(user);
+	 }
 	 
 	 @Transactional
 	 public List<User> getUsers(){
@@ -34,8 +34,8 @@ public class UserService  implements UserDetailsService{
 	 }
 	
 	 @Transactional
-	 public User getUser(String email, String password) {
-		return userDao.getUser(email, password);
+	 public User getUser(String email) {
+		return userDao.getUser(email);
 	}
 	
 	 @Transactional
