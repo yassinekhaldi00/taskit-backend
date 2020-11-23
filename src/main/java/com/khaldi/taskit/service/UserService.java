@@ -44,14 +44,18 @@ public class UserService  implements UserDetailsService{
 	 }
 	
 	@Transactional
-	public User deleteUser(long id) {
-		return userDao.deleteUser(id);
+	public boolean deleteUser(long id, String password) {
+		return userDao.deleteUser(id, password);
 	}
 	
 	@Transactional
 	public User updateUser(User user) {
 		return userDao.updateUser(user);
 	}
-	 
+	
+	@Transactional
+	public boolean changePassword(long id, String password, String newPassword) {
+		return userDao.changePassword(id, password, newPassword);
+	}
 	 
 }

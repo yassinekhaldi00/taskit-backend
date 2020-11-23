@@ -77,15 +77,28 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping("/{id}")
-	public User deleteUser(@PathVariable("id") long id) {
-		return userService.deleteUser(id);
+	@DeleteMapping
+	public boolean deleteUser(@RequestBody ObjectNode objectNode) {
+		long id = objectNode.get("id").asLong();
+		String password = objectNode.get("password").asText();
+		return userService.deleteUser(id, password);
+	}
+	
+	@PutMapping("/changePassword")
+	public boolean changePassword(@RequestBody ObjectNode objectNode) {
+		long id = objectNode.get("id").asLong();
+		String password = objectNode.get("password").asText();
+		String newPassword = objectNode.get("newPassword").asText();
+		
+		return userService.changePassword(id, password, newPassword);
 	}
 	
 	@PutMapping
 	public User updateUser(@RequestBody User user) {
 		return userService.updateUser(user);
 	}
+	
+	
 	
 	
 

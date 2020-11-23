@@ -60,11 +60,14 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User deleteUser(long id) {
+	public boolean deleteUser(long id, String password) {
 		Session session = entityManager.unwrap(Session.class);
-		User user = session.find(User.class, id);
-		session.remove(user);
-		return user;
+		User user = session.load(User.class, id);
+		if(password.equals(user.getPassword())) {
+			session.delete(user);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -72,12 +75,12 @@ public class UserDaoImpl implements UserDao {
 		User newUser = new User();
 		Session session = entityManager.unwrap(Session.class);
 		@SuppressWarnings("unchecked")
-		Query<User> query = session.createQuery("from User where email=: email").setParameter("email", user.getEmail());
+		Query<User> query = session.createQuery("from User where id=: id").setParameter("id", user.getId());
 		try {
 			newUser = query.getSingleResult();
 			newUser.setFirstName(user.getFirstName());
 			newUser.setLastName(user.getLastName());
-			newUser.setPassword(user.getPassword());
+			newUser.setEmail(user.getEmail());
 			session.update(newUser);
 		}
 		catch(NoResultException e) {
@@ -85,6 +88,27 @@ public class UserDaoImpl implements UserDao {
 		}
 		return newUser;
 		
+	}
+	@Override
+	public boolean changePassword(long id, String password, String newPassword) {
+		User user = new User();
+		Session session = entityManager.unwrap(Session.class);
+		@SuppressWarnings("unchecked")
+		Query<User> query = session.createQuery("from User where id=: id ").setParameter("id", id);
+		try {
+			user = query.getSingleResult();
+			if(password.equals(user.getPassword())) {
+				user.setPassword(newPassword);
+				session.update(user);
+				return true;
+			}else {
+				return false;
+			}
+		}
+		catch(NoResultException e) {
+			return false;
+		}
+
 	}
 
 }

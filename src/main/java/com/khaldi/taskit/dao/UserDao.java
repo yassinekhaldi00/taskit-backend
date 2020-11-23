@@ -12,8 +12,10 @@ public interface UserDao {
 	
 	User addUser(User user);
 	
-	User deleteUser(long id);
+	boolean deleteUser(long id, String password);
 	
 	User updateUser(User user);
+	
+	boolean changePassword(long id, String password, String newPassword);
 
 }
