@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,6 +28,7 @@ import com.khaldi.taskit.service.UserService;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+	
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -51,8 +53,8 @@ public class UserController {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
 		}
 		catch (BadCredentialsException e) {
+			System.out.println("Incorrect username or password");
 			throw new Exception("Incorrect username or password", e);
-			
 		}
 		
 		final UserDetails userDetails =  userService.loadUserByUsername(email);
@@ -71,6 +73,7 @@ public class UserController {
 			ObjectNode objectNode = new ObjectMapper().createObjectNode();
 			objectNode.put("email", userAdded.getEmail());
 			objectNode.put("password", userAdded.getPassword());
+			System.out.println(userAdded.getPassword());
 			return getUser(objectNode);
 		}
 		return user;

@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.khaldi.taskit.model.User;
@@ -47,23 +48,28 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User addUser(User user) {
 		Session session = entityManager.unwrap(Session.class);
+		User userAdded = new User();
 		@SuppressWarnings("unchecked")
 		Query<User> query =  session.createQuery("from User where email=: email").setParameter("email", user.getEmail());
 		try {
 			query.getSingleResult();
-			user.setValid(false);
+			userAdded.setValid(false);
 		}catch(NoResultException e) {
+			String password = user.getPassword();
+			user.setPassword(new BCryptPasswordEncoder().encode(password));
 			session.save(user);
-			user.setValid(true);
+			userAdded.setEmail(user.getEmail());
+			userAdded.setPassword(password);
+			userAdded.setValid(true);
 		}
-		return user;
+		return userAdded;
 	}
 
 	@Override
 	public boolean deleteUser(long id, String password) {
 		Session session = entityManager.unwrap(Session.class);
 		User user = session.load(User.class, id);
-		if(password.equals(user.getPassword())) {
+		if(new BCryptPasswordEncoder().matches(password, user.getPassword())) {
 			session.delete(user);
 			return true;
 		}
@@ -97,8 +103,8 @@ public class UserDaoImpl implements UserDao {
 		Query<User> query = session.createQuery("from User where id=: id ").setParameter("id", id);
 		try {
 			user = query.getSingleResult();
-			if(password.equals(user.getPassword())) {
-				user.setPassword(newPassword);
+			if(new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+				user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
 				session.update(user);
 				return true;
 			}else {
