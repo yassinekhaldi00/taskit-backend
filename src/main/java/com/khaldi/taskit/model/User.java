@@ -15,23 +15,23 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table( name = "user")
+@Table( name = "taskitUser")
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(nullable = false)
+	@Column(name="firstName", nullable = false)
 	private String firstName;
 	
-	@Column(nullable = false)
+	@Column(name="lastName",nullable = false)
 	private String lastName;
 	
-	@Column(unique = true,nullable = false)
+	@Column(name="email",unique = true, nullable = false)
 	private String email;
 
-	@Column(nullable = false)
+	@Column(name="password" , nullable = false)
 	private String password;
 	
 	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL)
