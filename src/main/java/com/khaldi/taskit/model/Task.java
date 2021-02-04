@@ -21,7 +21,7 @@ public class Task {
 	
 	private String description;
 	
-	private boolean done;
+	private String taskState;
 	
 	@ManyToOne
 	private User user;
@@ -50,12 +50,12 @@ public class Task {
 		this.description = description;
 	}
 
-	public boolean isDone() {
-		return done;
+	public String getTaskState() {
+		return taskState;
 	}
 
-	public void setDone(boolean done) {
-		this.done = done;
+	public void setTastState(String taskState) {
+		this.taskState = taskState;
 	}
 
 	public User getUser() {
