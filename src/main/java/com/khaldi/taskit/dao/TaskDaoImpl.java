@@ -1,6 +1,7 @@
 package com.khaldi.taskit.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -18,12 +19,15 @@ public class TaskDaoImpl implements TaskDao {
 	
 	@Autowired
 	private EntityManager entityManager;
+	
+	@Autowired 
+	private UserDao userDao;
 
 	@Override
 	public List<Task> getTasks(long userId) {
 		Session session = entityManager.unwrap(Session.class);
 		@SuppressWarnings("unchecked")
-		Query<Task> query = session.createQuery("from Task t where t.user.id=:id ").setParameter("id",userId);
+		Query<Task> query = session.createQuery("select tasks from User u where u.id=:id ").setParameter("id",userId);
 		List<Task> tasks = query.list();
 		return tasks;
 	}
@@ -74,5 +78,21 @@ public class TaskDaoImpl implements TaskDao {
 		}
 		
 	}
-
+	
+	@Override
+	public boolean shareTask(String email, Task task) {
+		User user = userDao.getUser(email);
+		if (user.isValid()){
+			Session session = entityManager.unwrap(Session.class);
+			Task newTask = this.getTask(task.getId());
+			Set<User> users = newTask.getUser();
+			users.add(user);
+			newTask.setUser(users);
+			session.update(newTask);
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
 }

@@ -17,5 +17,6 @@ public interface UserDao {
 	User updateUser(User user);
 	
 	boolean changePassword(long id, String password, String newPassword);
+	
 
 }

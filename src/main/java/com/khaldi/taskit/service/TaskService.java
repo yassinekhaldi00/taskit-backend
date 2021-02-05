@@ -45,4 +45,9 @@ public class TaskService {
 	public boolean deleteTasks(long userId) {
 		return taskDao.deleteTasks(userId);
 	}
+	
+	@Transactional
+	public boolean shareTask(String email, Task task) {
+		return taskDao.shareTask(email, task);
+	}
 }

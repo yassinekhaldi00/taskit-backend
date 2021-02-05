@@ -19,4 +19,6 @@ public interface TaskDao {
 	
 	boolean deleteTasks(long userId);
 	
+	boolean shareTask(String email, Task task);
+	
 }
