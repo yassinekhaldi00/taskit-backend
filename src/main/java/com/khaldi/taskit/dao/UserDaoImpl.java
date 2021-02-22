@@ -56,6 +56,7 @@ public class UserDaoImpl implements UserDao {
 			userAdded.setValid(false);
 		}catch(NoResultException e) {
 			String password = user.getPassword();
+			System.out.println(password);
 			user.setPassword(new BCryptPasswordEncoder().encode(password));
 			session.save(user);
 			userAdded.setEmail(user.getEmail());

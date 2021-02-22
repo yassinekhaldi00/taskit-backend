@@ -20,11 +20,11 @@ public class Invitation {
 	private String state;
 	
 	@ManyToOne
-	@JsonIgnoreProperties({"tasks", "invitationsSending","invitationsReceiving"})
+	@JsonIgnoreProperties({"tasks", "invitationsSending","invitationsReceiving","password"})
 	private User sender;
 	
 	@ManyToOne
-	@JsonIgnoreProperties({"tasks", "invitationsSending","invitationsReceiving"})
+	@JsonIgnoreProperties({"tasks", "invitationsSending","invitationsReceiving","password"})
 	private User receiver;
 	
 	@ManyToOne

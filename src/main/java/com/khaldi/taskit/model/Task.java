@@ -32,7 +32,7 @@ public class Task {
 	
 	@ManyToMany
 	@JoinTable
-	@JsonIgnoreProperties("tasks")
+	@JsonIgnoreProperties({"tasks", "password"})
 	private Set<User> user = new HashSet<>();
 	
 	@OneToMany( mappedBy = "task", cascade = CascadeType.ALL)

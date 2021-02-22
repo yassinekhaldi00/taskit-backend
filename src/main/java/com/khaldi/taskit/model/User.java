@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table( name = "taskitUser")
-@JsonIgnoreProperties("password")
 public class User {
 	
 	@Id
@@ -41,6 +40,10 @@ public class User {
 	@Column(name="password" , nullable = false)
 	private String password;
 	
+	@Column(name="color")
+	private String color;
+	
+
 	@ManyToMany( mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Task> tasks = new HashSet<>();
 	
@@ -147,5 +150,12 @@ public class User {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", password=" + password + ", valid=" + valid + "]";
 	}
+	
+	public String getColor() {
+		return color;
+	}
 
+	public void setColor(String color) {
+		this.color = color;
+	}
 }
