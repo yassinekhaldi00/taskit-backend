@@ -46,20 +46,26 @@ public class InvitationDaoImpl implements InvitationDao {
 	@Override
 	public boolean addInvitation(String email, long taskId, long senderId) {
 		Session session = entityManager.unwrap(Session.class);
-		User reciever = userDao.getUser(email);
-		User sender = session.find(User.class, senderId);
-		if (reciever.isValid()){
-			Invitation invitation = new Invitation();
-			Task task = taskDao.getTask(taskId);
-			invitation.setTask(task);
-			invitation.setState("send");
-			invitation.setReceiver(reciever);
-			invitation.setSender(sender);
-			session.save(invitation);
-			return true;
-		}else {
-			return false;
+		Query<Invitation> query = session.createQuery("from Invitation i where i.task.id=:id ").setParameter("id",taskId);
+		List<Invitation> invitations = query.list();
+		if (invitations.size() <= 0) {
+			User reciever = userDao.getUser(email);
+			User sender = session.find(User.class, senderId);
+			if (reciever.isValid()){
+				Invitation invitation = new Invitation();
+				Task task = taskDao.getTask(taskId);
+				invitation.setTask(task);
+				invitation.setState("send");
+				invitation.setReceiver(reciever);
+				invitation.setSender(sender);
+				session.save(invitation);
+				return true;
+			}else {
+				return false;
+			}
 		}
+		return true;
+		
 	}
 	
 	@Override

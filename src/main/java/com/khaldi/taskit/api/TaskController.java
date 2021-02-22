@@ -55,8 +55,8 @@ public class TaskController {
 		return taskService.deleteTasks(userId);
 	}
 	
-	@PutMapping("share/{email}")
-	public boolean shareTask(@PathVariable("email") String email, @RequestBody Task task) {
-		return taskService.shareTask(email, task);
+	@DeleteMapping("/{taskId}/user/{userId}")
+	public boolean deleteUserFromTask(@PathVariable("taskId") long taskId, @PathVariable("userId") long userId) {
+		return taskService.deleteUserFromTask(taskId, userId);
 	}
 }

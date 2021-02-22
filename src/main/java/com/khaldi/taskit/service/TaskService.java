@@ -2,6 +2,8 @@ package com.khaldi.taskit.service;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +48,7 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public boolean shareTask(String email, Task task) {
-		return taskDao.shareTask(email, task);
+	public boolean deleteUserFromTask(long taskId, long userId) {
+		return taskDao.deleteUserFromTask(taskId, userId);
 	}
 }

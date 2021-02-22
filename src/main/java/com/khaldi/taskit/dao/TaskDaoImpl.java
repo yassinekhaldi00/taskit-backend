@@ -78,21 +78,24 @@ public class TaskDaoImpl implements TaskDao {
 		}
 		
 	}
-	
+
 	@Override
-	public boolean shareTask(String email, Task task) {
-		User user = userDao.getUser(email);
-		if (user.isValid()){
-			Session session = entityManager.unwrap(Session.class);
-			Task newTask = this.getTask(task.getId());
-			Set<User> users = newTask.getUser();
-			users.add(user);
-			newTask.setUser(users);
-			session.update(newTask);
-			return true;
-		}else {
-			return false;
-		}
+	public boolean deleteUserFromTask(long taskId, long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		Task task = this.getTask(taskId);
+		Set<User> users = task.getUser();
+		for (User user : users) {
+			 	if(user.getId() == userId) {
+			 		users.remove(user);
+			 		task.setUser(users);
+					session.update(task);
+					return true;
+			 	}
+			}
 		
+		return false;
 	}
+	
+
+	
 }
