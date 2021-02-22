@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.khaldi.taskit.dao.TaskDao;
 import com.khaldi.taskit.model.Task;
-import com.khaldi.taskit.model.User;
 
 @Service
 public class TaskService {

@@ -17,9 +17,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table( name = "taskitUser")
+@JsonIgnoreProperties("password")
 public class User {
 	
 	@Id
@@ -40,6 +43,15 @@ public class User {
 	
 	@ManyToMany( mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Task> tasks = new HashSet<>();
+	
+	@OneToMany( mappedBy = "sender", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"invitationsSending","invitationsReceiving"})
+	private Set<Invitation> invitationsSending = new HashSet<>();
+	
+	@OneToMany( mappedBy = "receiver", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"invitationsSending","invitationsReceiving"})
+	private Set<Invitation> invitationsReceiving = new HashSet<>();
+	
 	
 	@Transient
 	private boolean valid;
@@ -114,6 +126,22 @@ public class User {
 		this.valid = valid;
 	}
 	
+	public Set<Invitation> getInvitationsSending() {
+		return invitationsSending;
+	}
+
+	public void setInvitationsSending(Set<Invitation> invitationsSending) {
+		this.invitationsSending = invitationsSending;
+	}
+
+	public Set<Invitation> getInvitationsReceiving() {
+		return invitationsReceiving;
+	}
+
+	public void setInvitationReceving(Set<Invitation> invitationsReceiving) {
+		this.invitationsReceiving = invitationsReceiving;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email

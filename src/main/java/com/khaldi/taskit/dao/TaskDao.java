@@ -3,7 +3,6 @@ package com.khaldi.taskit.dao;
 import java.util.List;
 
 import com.khaldi.taskit.model.Task;
-import com.khaldi.taskit.model.User;
 
 public interface TaskDao {
 	
